@@ -33,12 +33,20 @@
         button:hover {
             background-color: #0056b3;
         }
+        /* Стили для кнопки отправки результатов */
+        .submit-button {
+            background-color: #4CAF50; /* Зеленый цвет для кнопки отправки результатов */
+        }
+        
+        .submit-button:hover {
+            background-color: #45a049; /* Темнее при наведении */
+        }
     </style>
 </head>
 <body>
     <h1>Квиз с подсказками</h1>
     <div id="quiz-container"></div>
-    <button id="submit-results" style="display: none;">Отправить результаты</button>
+    <button id="submit-results" class="submit-button" style="display: none;">Отправить результаты</button>
 
     <script>
         const questions = [
@@ -69,7 +77,7 @@
             });
         
             // Кнопка для получения подсказки
-            quizContainer.innerHTML += `<button onclick="showHint()">Получить подсказку</button>`;
+            quizContainer.innerHTML += `<button class="submit-button" onclick="showHint()">Получить подсказку</button>`;
         }
         
         function checkAnswer(selectedOption) {
