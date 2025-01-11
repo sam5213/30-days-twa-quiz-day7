@@ -9,33 +9,29 @@
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
-            color: #333;
-            text-align: center;
+            margin: 0;
             padding: 20px;
         }
-        h1 {
-            color: #4CAF50;
-        }
-        button {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            margin: 10px 0;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
+        
         #quiz-container {
             background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             padding: 20px;
-            margin: 0 auto;
-            max-width: 600px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        button {
+            margin-top: 10px;
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 35px;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
@@ -59,37 +55,44 @@
                 hint: "Этот автор также известен своими романами о жизни в России."
             }
         ];
-
+        
         let currentQuestionIndex = 0;
-
+        
         function displayQuestion() {
             const quizContainer = document.getElementById('quiz-container');
-            quizContainer.innerHTML = `<h2>${questions[currentQuestionIndex].question}</h2>`;
-            questions[currentQuestionIndex].options.forEach(option => {
+            const currentQuestion = questions[currentQuestionIndex];
+            quizContainer.innerHTML = `<h2>${currentQuestion.question}</h2>`;
+            
+            currentQuestion.options.forEach(option => {
                 quizContainer.innerHTML += `<button onclick="checkAnswer('${option}')">${option}</button>`;
             });
+        
+            // Кнопка для получения подсказки
             quizContainer.innerHTML += `<button onclick="showHint()">Получить подсказку</button>`;
         }
-
+        
         function checkAnswer(selectedOption) {
+            const quizContainer = document.getElementById('quiz-container');
             if (selectedOption === questions[currentQuestionIndex].answer) {
-                alert('Правильно! Вы ответили на вопрос.');
+                quizContainer.innerHTML += '<p style="color: green;">Правильно! Вы ответили на вопрос.</p>';
                 currentQuestionIndex++;
                 if (currentQuestionIndex < questions.length) {
                     displayQuestion();
                 } else {
-                    alert('Вы завершили квиз!');
+                    quizContainer.innerHTML += '<p>Вы завершили квиз!</p>';
                     document.getElementById('submit-results').style.display = 'block';
                 }
             } else {
-                alert('Неправильно. Попробуйте еще раз.');
+                quizContainer.innerHTML += '<p style="color: red;">Неправильно. Попробуйте еще раз.</p>';
             }
         }
-
+        
         function showHint() {
-            alert(questions[currentQuestionIndex].hint);
+            const quizContainer = document.getElementById('quiz-container');
+            quizContainer.innerHTML += `<p style="color: orange;">Подсказка: ${questions[currentQuestionIndex].hint}</p>`;
         }
-
+        
+        // Инициализация квиза
         displayQuestion();
     </script>
 </body>
