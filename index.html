@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Квиз с подсказками</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            color: #4CAF50;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px 0;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #quiz-container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin: 0 auto;
+            max-width: 600px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Квиз с подсказками</h1>
+    <div id="quiz-container"></div>
+    <button id="submit-results" style="display: none;">Отправить результаты</button>
+
+    <script>
+        const questions = [
+            {
+                question: "Какой цвет небо?",
+                options: ["Синий", "Зеленый", "Красный"],
+                answer: "Синий",
+                hint: "Это цвет, который мы видим в ясный день."
+            },
+            {
+                question: "Кто написал 'Войну и мир'?",
+                options: ["Толстой", "Достоевский", "Пушкин"],
+                answer: "Толстой",
+                hint: "Этот автор также известен своими романами о жизни в России."
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+
+        function displayQuestion() {
+            const quizContainer = document.getElementById('quiz-container');
+            quizContainer.innerHTML = `<h2>${questions[currentQuestionIndex].question}</h2>`;
+            questions[currentQuestionIndex].options.forEach(option => {
+                quizContainer.innerHTML += `<button onclick="checkAnswer('${option}')">${option}</button>`;
+            });
+            quizContainer.innerHTML += `<button onclick="showHint()">Получить подсказку</button>`;
+        }
+
+        function checkAnswer(selectedOption) {
+            if (selectedOption === questions[currentQuestionIndex].answer) {
+                alert('Правильно! Вы ответили на вопрос.');
+                currentQuestionIndex++;
+                if (currentQuestionIndex < questions.length) {
+                    displayQuestion();
+                } else {
+                    alert('Вы завершили квиз!');
+                    document.getElementById('submit-results').style.display = 'block';
+                }
+            } else {
+                alert('Неправильно. Попробуйте еще раз.');
+            }
+        }
+
+        function showHint() {
+            alert(questions[currentQuestionIndex].hint);
+        }
+
+        displayQuestion();
+    </script>
+</body>
+</html>
