@@ -57,6 +57,7 @@
         ];
         
         let currentQuestionIndex = 0;
+        const userAnswers = []; // Массив для хранения ответов пользователя
         
         function displayQuestion() {
             const quizContainer = document.getElementById('quiz-container');
@@ -74,6 +75,7 @@
         function checkAnswer(selectedOption) {
             const quizContainer = document.getElementById('quiz-container');
             if (selectedOption === questions[currentQuestionIndex].answer) {
+                selectAnswer(selectedOption, questions[currentQuestionIndex].answer);
                 quizContainer.innerHTML += '<p style="color: green;">Правильно! Вы ответили на вопрос.</p>';
                 currentQuestionIndex++;
                 if (currentQuestionIndex < questions.length) {
@@ -84,6 +86,7 @@
                 }
             } else {
                 quizContainer.innerHTML += '<p style="color: red;">Неправильно. Попробуйте еще раз.</p>';
+                selectAnswer(selectedOption, questions[currentQuestionIndex].answer);
             }
         }
         
@@ -91,6 +94,24 @@
             const quizContainer = document.getElementById('quiz-container');
             quizContainer.innerHTML += `<p style="color: orange;">Подсказка: ${questions[currentQuestionIndex].hint}</p>`;
         }
+
+        function selectAnswer(selected, correct) {
+            userAnswers.push({ selected, correct }); // Сохраняем ответ пользователя
+        }
+
+        function sendResults() {
+            const results = userAnswers .map((answer, index) => {
+                return `Вопрос ${index + 1}: Вы выбрали "${answer.selected}", правильный ответ: "${answer.correct}"`;
+            }).join('\n');
+
+            // Форматируем данные в JSON
+            const dataToSend = JSON.stringify({ results });
+
+            // Отправляем данные в бот
+            Telegram.WebApp.sendData(dataToSend);
+        }
+
+        document.getElementById('submit-results').onclick = sendResults; // Привязываем функцию к кнопке
         
         // Инициализация квиза
         displayQuestion();
